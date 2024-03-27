@@ -93,7 +93,18 @@
     .game div {
       display: flex;
       justify-content: center;
+      align-items: center;
+      /* Center align items vertically */
       color: #F1FAEE;
+    }
+
+    .team-logo {
+      width: 30px;
+      /* Adjust the width of the logo */
+      height: auto;
+      /* Maintain aspect ratio */
+      margin-right: 10px;
+      /* Add some spacing between the logo and team name */
     }
 
     footer {
@@ -117,12 +128,12 @@
         <h2>{{ $event['tournament']['name'] ?? 'Unknown Tournament' }}</h2>
         <div>
           <a href="/game/{{ $event['id'] }}">
-            <img src="{{ $apiService->fetchTeamLogo($event['homeTeam']['name']) }}" alt="{{ $event['homeTeam']['name'] }} Logo">
+            <img src="{{ $apiService->fetchTeamLogo($event['homeTeam']['id']) }}" alt="{{ $event['homeTeam']['name'] }} Logo" class="team-logo">
             <strong>{{ $event['homeTeam']['name'] ?? 'Home Team' }}</strong>
           </a>
           vs.
           <a href="/game/{{ $event['id'] }}">
-            <img src="{{ $apiService->fetchTeamLogo($event['awayTeam']['name']) }}" alt="{{ $event['awayTeam']['name'] }} Logo">
+            <img src="{{ $apiService->fetchTeamLogo($event['awayTeam']['id']) }}" alt="{{ $event['awayTeam']['name'] }} Logo" class="team-logo">
             <strong>{{ $event['awayTeam']['name'] ?? 'Away Team' }}</strong>
           </a>
         </div>
@@ -135,8 +146,9 @@
       @endforelse
     </ul>
   </main>
+
   <footer>
-    Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
+    Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }
   </footer>
 </body>
 

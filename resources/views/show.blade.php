@@ -7,7 +7,6 @@
   <title>Laravel Live Sports</title>
   <link href="https://fonts.googleapis.com/css?family=Nunito:400,600&display=swap" rel="stylesheet">
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
   <style>
     body {
       background-color: #000000;
@@ -19,7 +18,7 @@
       text-align: center;
       padding: 20px;
       top: 0;
-      width: 100%
+      width: 100%;
     }
 
     h1 {
@@ -37,10 +36,10 @@
       padding-bottom: 10px;
       justify-content: center;
       color: yellow;
+    }
 
-      hover {
-        color: #A8DADC;
-      }
+    a:hover {
+      color: #A8DADC;
     }
 
     .main {
@@ -75,7 +74,6 @@
     }
 
     @media (min-width: 600px) {
-
       .game {
         flex: 0 0 calc(50% - 20px);
       }
@@ -97,27 +95,62 @@
       width: 100%;
     }
   </style>
-  </style>
 </head>
 
 <body>
+  <header>
+    <h1>Live NHL Scores</h1>
+  </header>
   <main>
     <ul class="games" id="games-list">
       @forelse ($games as $event)
       <li class="game">
         <h2>{{ $event['tournament']['name'] ?? 'Unknown Tournament' }}</h2>
         <div>
-          <a href="/game/{{ $event['id'] }}"><strong>{{ $event['homeTeam']['name'] ?? 'Home Team' }} </strong> vs. <strong>{{ $event['awayTeam']['name'] ?? 'Away Team' }}</strong></a>
+          <a href="/game/{{ $event['id'] }}">
+            <img src="{{ $apiService->fetchTeamLogo($event['homeTeam']['name']) }}" alt="{{ $event['homeTeam']['name'] }} Logo">
+            <strong>{{ $event['homeTeam']['name'] ?? 'Home Team' }}</strong>
+          </a>
+          vs.
+          <a href="/game/{{ $event['id'] }}">
+            <img src="{{ $apiService->fetchTeamLogo($event['awayTeam']['name']) }}" alt="{{ $event['awayTeam']['name'] }} Logo">
+            <strong>{{ $event['awayTeam']['name'] ?? 'Away Team' }}</strong>
+          </a>
         </div>
         <div class="score">{{ $event['homeScore']['current'] ?? 'N/A' }} : {{ $event['awayScore']['current'] ?? 'N/A' }}</div>
         <div>Status: {{ $event['status']['description'] ?? 'N/A' }}</div>
-        <!-- <div>Start Time: {{ date('Y-m-d H:i:s', $event['startTimestamp']) }}</div> -->
+
+        <!-- Display home team schedule -->
+        <div>
+          <h3>{{ $event['homeTeam']['name'] ?? 'Home Team' }} Schedule:</h3>
+          <ul>
+            @forelse ($apiService->fetchNextMatches($event['homeTeam']['id']) as $match)
+            <li>{{ $match['homeTeam']['name'] }} vs {{ $match['awayTeam']['name'] }}</li>
+            @empty
+            <li>No upcoming matches</li>
+            @endforelse
+          </ul>
+        </div>
+
+        <!-- Display away team schedule -->
+        <div>
+          <h3>{{ $event['awayTeam']['name'] ?? 'Away Team' }} Schedule:</h3>
+          <ul>
+            @forelse ($apiService->fetchNextMatches($event['awayTeam']['id']) as $match)
+            <li>{{ $match['homeTeam']['name'] }} vs {{ $match['awayTeam']['name'] }}</li>
+            @empty
+            <li>No upcoming matches</li>
+            @endforelse
+          </ul>
+        </div>
+
       </li>
       @empty
       <li class="game">No games available</li>
       @endforelse
     </ul>
   </main>
+
   <footer>
     Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
   </footer>
