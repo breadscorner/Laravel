@@ -26,8 +26,6 @@ class ApiController
           return $event['id'] == (int) $id;
         });
 
-        return view('show', compact('games'));
+        return view('show', compact('games', 'apiService'));
     }
 }
-
-// 11384172

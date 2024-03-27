@@ -7,12 +7,11 @@
   <title>Laravel Live Sports</title>
   <link href="https://fonts.googleapis.com/css?family=Nunito:400,600&display=swap" rel="stylesheet">
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
   <style>
     body {
       background-color: #000000;
-      /* Black */
       color: #F1FAEE;
-      /* Light Cream */
       font-family: 'Digital-7 Mono', sans-serif;
     }
 
@@ -68,21 +67,17 @@
 
     .game {
       background-color: #333333;
-      /* Dark Grey */
       margin: 10px;
       padding: 20px;
       border-radius: 10px;
       border: 1px solid #A8DADC;
       flex: 0 0 100%;
-      /* Default to full width on small screens */
     }
 
     @media (min-width: 600px) {
 
-      /* Medium screens and up */
       .game {
         flex: 0 0 calc(50% - 20px);
-        /* Two games per row, accounting for margins */
       }
     }
 
@@ -94,6 +89,7 @@
     }
 
     footer {
+      position: fixed;
       text-align: center;
       padding: 10px;
       left: 0;

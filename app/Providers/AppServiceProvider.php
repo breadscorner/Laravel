@@ -39,6 +39,18 @@ class AppServiceProvider extends ServiceProvider
                     $response = $this->client->request('GET', '/api/ice-hockey/matches/live');
                     return json_decode($response->getBody()->getContents(), true);
                 }
+
+                public function fetchTeamLogo($teamName)
+                {
+                    $response = $this->client->request('GET', '/api/placeholder/team.svg', [
+                        'headers' => [
+                            'X-RapidAPI-Host' => 'allsportsapi2.p.rapidapi.com',
+                            'X-RapidAPI-Key' => '2e0661fcf4mshd92ea5a77f2c19ep1c4802jsnbad996327241',
+                        ],
+                    ]);
+
+                    return $response->getBody();
+                }
             };
         });
     }

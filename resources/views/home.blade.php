@@ -116,7 +116,15 @@
       <li class="game">
         <h2>{{ $event['tournament']['name'] ?? 'Unknown Tournament' }}</h2>
         <div>
-          <a href="/game/{{ $event['id'] }}"><strong>{{ $event['homeTeam']['name'] ?? 'Home Team' }} </strong> vs. <strong>{{ $event['awayTeam']['name'] ?? 'Away Team' }}</strong></a>
+          <a href="/game/{{ $event['id'] }}">
+            <img src="{{ $apiService->fetchTeamLogo($event['homeTeam']['name']) }}" alt="{{ $event['homeTeam']['name'] }} Logo">
+            <strong>{{ $event['homeTeam']['name'] ?? 'Home Team' }}</strong>
+          </a>
+          vs.
+          <a href="/game/{{ $event['id'] }}">
+            <img src="{{ $apiService->fetchTeamLogo($event['awayTeam']['name']) }}" alt="{{ $event['awayTeam']['name'] }} Logo">
+            <strong>{{ $event['awayTeam']['name'] ?? 'Away Team' }}</strong>
+          </a>
         </div>
         <div class="score">{{ $event['homeScore']['current'] ?? 'N/A' }} : {{ $event['awayScore']['current'] ?? 'N/A' }}</div>
         <div>Status: {{ $event['status']['description'] ?? 'N/A' }}</div>
