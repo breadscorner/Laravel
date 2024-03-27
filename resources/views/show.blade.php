@@ -17,8 +17,8 @@
     <h1>Laravel Live Sports</h1>
   </header>
   <main>
-    <ul class="games" id="games-list">
-      @forelse ($games['events'] as $event)
+  <ul class="games" id="games-list">
+      @forelse ($games as $event)
         <li class="game">
           <h2>{{ $event['tournament']['name'] ?? 'Unknown Tournament' }}</h2>
           <div>

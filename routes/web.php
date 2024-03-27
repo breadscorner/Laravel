@@ -1,12 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ApiController;
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', [ApiController::class, 'index']);
 
-Route::get('/scoreboard', function () {
-    return view('scoreboard');
-});
-
+Route::get('/game/{id}', [ApiController::class, 'show']);
