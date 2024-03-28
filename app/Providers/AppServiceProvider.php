@@ -43,41 +43,44 @@ class AppServiceProvider extends ServiceProvider
 
         public function fetchNextMatches($teamId)
         {
-          try {
-            // Construct the URL with the dynamic team ID
-            $url = "/api/ice-hockey/team/{$teamId}/matches/next/{page}";
 
-            // Make a request to fetch the next matches using the constructed URL
-            $response = $this->client->request('GET', $url, [
-              'headers' => [
-                'X-RapidAPI-Host' => 'allsportsapi2.p.rapidapi.com',
-                'X-RapidAPI-Key' => '2e0661fcf4mshd92ea5a77f2c19ep1c4802jsnbad996327241',
-              ],
-            ]);
+          $response = "/api/ice-hockey/team/{$teamId}/matches/next/{page}";
 
-            return json_decode($response->getBody()->getContents(), true);
-          } catch (\Exception $e) {
-            // Handle any exceptions or errors here
-            // For now, just return an empty array
-            return [];
-          }
-        }
-
-
-        public function fetchTeamLogo($teamId)
-        {
-          // Construct the URL with the team ID dynamically
-          $url = "/api/ice-hockey/team/{$teamId}/image";
-
-          // Make a request to fetch the team logo using the constructed URL
-          $response = $this->client->request('GET', $url, [
+          // Make a request to fetch the next matches using the constructed URL
+          $response = $this->client->request('GET', $response, [
             'headers' => [
               'X-RapidAPI-Host' => 'allsportsapi2.p.rapidapi.com',
               'X-RapidAPI-Key' => '2e0661fcf4mshd92ea5a77f2c19ep1c4802jsnbad996327241',
             ],
           ]);
 
-          return $response->getBody();
+          return json_decode($response->getBody()->getContents(), true);
+        }
+
+        public function fetchLeagueStandings()
+        {
+          $response = $this->client->request('GET', 'https://allsportsapi2.p.rapidapi.com/api/ice-hockey/tournament/234/season/42681/standings/total', [
+            'headers' => [
+              'X-RapidAPI-Host' => 'allsportsapi2.p.rapidapi.com',
+              'X-RapidAPI-Key' => '2e0661fcf4mshd92ea5a77f2c19ep1c4802jsnbad996327241',
+            ],
+          ]);
+          return json_decode($response->getBody()->getContents(), true);
+        }
+
+        public function fetchTeamLogo($teamId)
+        {
+          // Construct the URL with the team ID dynamically
+          $url = "/api/ice-hockey/team/{$teamId}/image";
+
+          // Assuming the API returns a direct URL to the image
+          $response = $this->client->request('GET', $url);
+
+          // Return the URL from the response if applicable
+          // This is a placeholder; adjust according to the actual API response structure
+          $logoUrl = (string) $response->getBody();
+
+          return $logoUrl;
         }
       };
     });
