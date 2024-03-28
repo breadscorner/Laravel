@@ -70,18 +70,27 @@ class AppServiceProvider extends ServiceProvider
 
         public function fetchTeamLogo($teamId)
         {
-          // Construct the URL with the team ID dynamically
-          $url = "/api/ice-hockey/team/{$teamId}/image";
-
-          // Assuming the API returns a direct URL to the image
-          $response = $this->client->request('GET', $url);
-
-          // Return the URL from the response if applicable
-          // This is a placeholder; adjust according to the actual API response structure
-          $logoUrl = (string) $response->getBody();
-
-          return $logoUrl;
+            // Construct the URL with the team ID dynamically
+            $url = "https://allsportsapi2.p.rapidapi.com/api/ice-hockey/team/{$teamId}/image";
+        
+            // Create a new Guzzle client
+            $client = new Client();
+        
+            // Set the required headers
+            $headers = [
+                'X-RapidAPI-Host' => 'allsportsapi2.p.rapidapi.com',
+                'X-RapidAPI-Key' => '2e0661fcf4mshd92ea5a77f2c19ep1c4802jsnbad996327241',
+            ];
+        
+            // Send the GET request with the headers
+            $response = $client->request('GET', $url, ['headers' => $headers]);
+        
+            // Assuming the API returns a direct URL to the image
+            $logoUrl = (string) $response->getBody();
+        
+            return $logoUrl;
         }
+        
       };
     });
   }

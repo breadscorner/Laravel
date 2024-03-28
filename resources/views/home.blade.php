@@ -94,17 +94,13 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      /* Center align items vertically */
       color: #F1FAEE;
     }
 
     .team-logo {
       width: 30px;
-      /* Adjust the width of the logo */
       height: auto;
-      /* Maintain aspect ratio */
       margin-right: 10px;
-      /* Add some spacing between the logo and team name */
     }
 
     .standings {
@@ -264,6 +260,8 @@
               @endforeach
             </tbody>
           </table>
+
+          <?php var_dump($westernConference); ?>
         </div>
       </div>
     </div>
