@@ -53,6 +53,21 @@
       flex-wrap: wrap;
     }
 
+    .teams-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .home-team,
+    .away-team {
+      flex: 1;
+      text-align: right;
+    }
+
+    .vs {
+      margin: 0 10px;
+    }
+
     .score {
       font-size: 2rem;
       text-align: center;
@@ -71,13 +86,16 @@
 
     .game {
       background-color: #1F2833;
-      /* Dark Grey */
       margin: 10px;
       padding: 20px;
       border-radius: 10px;
       border: 1px solid #A8DADC;
-      flex: 0 0 100%;
-      /* Default to full width on small screens */
+      flex: 0 0 calc(50% - 20px);
+      /* Two games per row, accounting for margins */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     @media (min-width: 600px) {
@@ -95,12 +113,6 @@
       justify-content: center;
       align-items: center;
       color: #F1FAEE;
-    }
-
-    .team-logo {
-      width: 30px;
-      height: auto;
-      margin-right: 10px;
     }
 
     .standings {
@@ -176,7 +188,7 @@
 
 <body>
   <header>
-    <h1>Live NHL Scores</h1>
+    <h1>Live Ice Hockey Scores</h1>
   </header>
 
   <main>
@@ -184,19 +196,13 @@
       @forelse ($games['events'] as $event)
       <li class="game">
         <h2>{{ $event['tournament']['name'] ?? 'Unknown Tournament' }}</h2>
-        <div>
-          <a href="/game/{{ $event['id'] }}">
-
-            <strong>{{ $event['homeTeam']['name'] ?? 'Home Team' }}</strong>
-          </a>
-          vs.
-          <a href="/game/{{ $event['id'] }}">
-
-            <strong>{{ $event['awayTeam']['name'] ?? 'Away Team' }}</strong>
-          </a>
+        <div class="teams-container">
+          <a href="/game/{{ $event['id'] }}" class="team home-team">{{ $event['homeTeam']['name'] ?? 'Home Team' }}</a>
+          <div class="vs">vs.</div>
+          <a href="/game/{{ $event['id'] }}" class="team away-team">{{ $event['awayTeam']['name'] ?? 'Away Team' }}</a>
         </div>
         <div class="score">{{ $event['homeScore']['current'] ?? 'N/A' }} : {{ $event['awayScore']['current'] ?? 'N/A' }}</div>
-        <div>Status: {{ $event['status']['description'] ?? 'N/A' }}</div>
+        <div>{{ $event['status']['description'] ?? 'N/A' }}</div>
       </li>
       @empty
       <li class="game">No games available</li>
@@ -204,7 +210,7 @@
     </ul>
 
     <div class="standings">
-      <h2>League Standings</h2>
+      <h2>NHL League Standings</h2>
       <div class="conference-container">
         <!-- Eastern Conference standings -->
         <div class="conference">

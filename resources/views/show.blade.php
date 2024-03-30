@@ -92,36 +92,29 @@
       width: 100%;
     }
 
-    .vs-text {
-      display: flex;
-      justify-content: center;
-    }
-
-    .team {
-      display: flex;
-      align-items: center;
-    }
-
     .vs {
-      margin: 0 10px;
+      text-align: center;
     }
 
-    /* Adjustments for the home and away team names */
     .home-team {
       text-align: right;
-      flex-grow: 1;
-      margin-right: auto;
     }
 
     .away-team {
       text-align: left;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
     }
   </style>
 </head>
 
 <body>
   <header>
-    <h1>Live NHL Scores</h1>
+    <h1>Live Ice Hockey Scores</h1>
   </header>
   <main>
     <ul class="games" id="games-list">
@@ -129,39 +122,43 @@
       <li class="game">
         <h2>{{ $event['tournament']['name'] ?? 'Unknown Tournament' }}</h2>
         <div class="vs-text">
-          <div class="team">
-            <span class="home-team">{{ $event['homeTeam']['name'] ?? 'Home Team' }}</span>
-            <span class="vs">vs.</span>
-            <span class="away-team">{{ $event['awayTeam']['name'] ?? 'Away Team' }}</span>
+          <div class="team-grid">
+            <div class="home-team">{{ $event['homeTeam']['name'] ?? 'Home Team' }}</div>
+            <div class="vs">vs.</div>
+            <div class="away-team">{{ $event['awayTeam']['name'] ?? 'Away Team' }}</div>
           </div>
         </div>
 
         <div class="score">{{ $event['homeScore']['current'] ?? 'N/A' }} : {{ $event['awayScore']['current'] ?? 'N/A' }}</div>
         <div>Status: {{ $event['status']['description'] ?? 'N/A' }}</div>
+      </li>
+      @empty
+      <li class="game">No games available</li>
+      @endforelse
 
-        <!-- Display home team schedule -->
-        <div>
-          <h3>{{ $event['homeTeam']['name'] ?? 'Home Team' }} Schedule:</h3>
-          <ul>
-            @forelse ($apiService->fetchNextMatches($event['homeTeam']['id']) ?? [] as $match)
-            <li>{{ $match['homeTeam']['name'] }} vs {{ $match['awayTeam']['name'] }}</li>
-            @empty
-            <li>No upcoming matches</li>
-            @endforelse
-          </ul>
-        </div>
+      <!-- Display home team schedule -->
+      <div>
+        <h3>{{ $event['homeTeam']['name'] ?? 'Home Team' }} Schedule:</h3>
+        <ul>
+          @forelse ($apiService->fetchNextMatches($event['homeTeam']['id']) ?? [] as $match)
+          <li>{{ $match['homeTeam']['name'] }} vs {{ $match['awayTeam']['name'] }}</li>
+          @empty
+          <li>No upcoming matches</li>
+          @endforelse
+        </ul>
+      </div>
 
-        <!-- Display away team schedule -->
-        <div>
-          <h3>{{ $event['awayTeam']['name'] ?? 'Away Team' }} Schedule:</h3>
-          <ul>
-            @forelse ($apiService->fetchNextMatches($event['awayTeam']['id']) ?? [] as $match)
-            <li>{{ $match['homeTeam']['name'] }} vs {{ $match['awayTeam']['name'] }}</li>
-            @empty
-            <li>No upcoming matches</li>
-            @endforelse
-          </ul>
-        </div>
+      <!-- Display away team schedule -->
+      <div>
+        <h3>{{ $event['awayTeam']['name'] ?? 'Away Team' }} Schedule:</h3>
+        <ul>
+          @forelse ($apiService->fetchNextMatches($event['awayTeam']['id']) ?? [] as $match)
+          <li>{{ $match['homeTeam']['name'] }} vs {{ $match['awayTeam']['name'] }}</li>
+          @empty
+          <li>No upcoming matches</li>
+          @endforelse
+        </ul>
+      </div>
       </li>
       @empty
       <li class="game">No games available</li>
