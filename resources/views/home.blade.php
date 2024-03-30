@@ -186,12 +186,12 @@
         <h2>{{ $event['tournament']['name'] ?? 'Unknown Tournament' }}</h2>
         <div>
           <a href="/game/{{ $event['id'] }}">
-            <img src="{{ $apiService->fetchTeamLogo($event['homeTeam']['id']) }}" alt="{{ $event['homeTeam']['name'] }} Logo" class="team-logo">
+
             <strong>{{ $event['homeTeam']['name'] ?? 'Home Team' }}</strong>
           </a>
           vs.
           <a href="/game/{{ $event['id'] }}">
-            <img src="{{ $apiService->fetchTeamLogo($event['awayTeam']['id']) }}" alt="{{ $event['awayTeam']['name'] }} Logo" class="team-logo">
+
             <strong>{{ $event['awayTeam']['name'] ?? 'Away Team' }}</strong>
           </a>
         </div>
@@ -248,7 +248,7 @@
             </thead>
             <tbody>
               <!-- Loop through standings data for Western Conference -->
-              @foreach ($standings['standings'][0]['rows'] as $row)
+              @foreach ($standings['standings'][1]['rows'] as $row)
               @if (in_array($row['team']['name'], array_merge($westernConference['Pacific Division'], $westernConference['Central Division'])))
               <tr>
                 <td>{{ $row['team']['name'] }}</td>
@@ -260,8 +260,6 @@
               @endforeach
             </tbody>
           </table>
-
-          <?php var_dump($westernConference); ?>
         </div>
       </div>
     </div>

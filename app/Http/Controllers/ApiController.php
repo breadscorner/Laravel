@@ -17,9 +17,7 @@ class ApiController
     // Fetch league standings from the API service
     $standings = $apiService->fetchLeagueStandings();
 
-    // Fetch team logos
-    $teamLogos = $apiService->fetchTeamLogos();
-
+    // Fet
     // Define Eastern and Western conference teams by division
     $easternConference = [
       'Atlantic Division' => [

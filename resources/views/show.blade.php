@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -94,6 +91,31 @@
       bottom: 0;
       width: 100%;
     }
+
+    .vs-text {
+      display: flex;
+      justify-content: center;
+    }
+
+    .team {
+      display: flex;
+      align-items: center;
+    }
+
+    .vs {
+      margin: 0 10px;
+    }
+
+    /* Adjustments for the home and away team names */
+    .home-team {
+      text-align: right;
+      flex-grow: 1;
+      margin-right: auto;
+    }
+
+    .away-team {
+      text-align: left;
+    }
   </style>
 </head>
 
@@ -106,17 +128,14 @@
       @forelse ($games as $event)
       <li class="game">
         <h2>{{ $event['tournament']['name'] ?? 'Unknown Tournament' }}</h2>
-        <div>
-          <a href="/game/{{ $event['id'] }}">
-            <img src="{{ $apiService->fetchTeamLogo($event['homeTeam']['name']) }}" alt="{{ $event['homeTeam']['name'] }} Logo">
-            <strong>{{ $event['homeTeam']['name'] ?? 'Home Team' }}</strong>
-          </a>
-          vs.
-          <a href="/game/{{ $event['id'] }}">
-            <img src="{{ $apiService->fetchTeamLogo($event['awayTeam']['name']) }}" alt="{{ $event['awayTeam']['name'] }} Logo">
-            <strong>{{ $event['awayTeam']['name'] ?? 'Away Team' }}</strong>
-          </a>
+        <div class="vs-text">
+          <div class="team">
+            <span class="home-team">{{ $event['homeTeam']['name'] ?? 'Home Team' }}</span>
+            <span class="vs">vs.</span>
+            <span class="away-team">{{ $event['awayTeam']['name'] ?? 'Away Team' }}</span>
+          </div>
         </div>
+
         <div class="score">{{ $event['homeScore']['current'] ?? 'N/A' }} : {{ $event['awayScore']['current'] ?? 'N/A' }}</div>
         <div>Status: {{ $event['status']['description'] ?? 'N/A' }}</div>
 
@@ -124,7 +143,7 @@
         <div>
           <h3>{{ $event['homeTeam']['name'] ?? 'Home Team' }} Schedule:</h3>
           <ul>
-            @forelse ($apiService->fetchNextMatches($event['homeTeam']['id']) as $match)
+            @forelse ($apiService->fetchNextMatches($event['homeTeam']['id']) ?? [] as $match)
             <li>{{ $match['homeTeam']['name'] }} vs {{ $match['awayTeam']['name'] }}</li>
             @empty
             <li>No upcoming matches</li>
@@ -136,20 +155,21 @@
         <div>
           <h3>{{ $event['awayTeam']['name'] ?? 'Away Team' }} Schedule:</h3>
           <ul>
-            @forelse ($apiService->fetchNextMatches($event['awayTeam']['id']) as $match)
+            @forelse ($apiService->fetchNextMatches($event['awayTeam']['id']) ?? [] as $match)
             <li>{{ $match['homeTeam']['name'] }} vs {{ $match['awayTeam']['name'] }}</li>
             @empty
             <li>No upcoming matches</li>
             @endforelse
           </ul>
         </div>
-
       </li>
       @empty
       <li class="game">No games available</li>
       @endforelse
     </ul>
   </main>
+
+
 
   <footer>
     Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
