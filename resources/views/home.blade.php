@@ -13,9 +13,7 @@
   <style>
     body {
       background-color: #000000;
-      /* Black */
       color: #F1FAEE;
-      /* Light Cream */
       font-family: 'Digital-7 Mono', sans-serif;
     }
 
@@ -91,7 +89,6 @@
       border-radius: 10px;
       border: 1px solid #A8DADC;
       flex: 0 0 calc(50% - 20px);
-      /* Two games per row, accounting for margins */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -99,7 +96,6 @@
     }
 
     @media (min-width: 600px) {
-
       /* Medium screens and up */
       .game {
         flex: 0 0 calc(50% - 20px);
