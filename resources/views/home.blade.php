@@ -96,6 +96,7 @@
     }
 
     @media (min-width: 600px) {
+
       /* Medium screens and up */
       .game {
         flex: 0 0 calc(50% - 20px);
@@ -204,6 +205,15 @@
       <li class="game">No games available</li>
       @endforelse
     </ul>
+
+    <div class="search-container">
+      <form action="{{ route('standings.search') }}" method="GET">
+        <label for="year">Search Standings by Year:</label>
+        <input type="text" id="year" name="year" placeholder="Enter year...">
+        <button type="submit">Search</button>
+      </form>
+    </div>
+
 
     <div class="standings">
       <h2>NHL League Standings</h2>
