@@ -285,9 +285,9 @@
       <h2>NHL League Standings</h2>
 
       <div class="search-container">
-        <form action="{{ route('standings.search') }}" method="GET" class="search-form">
+        <form autocomplete="off" action="{{ route('standings.search') }}" method="GET" class="search-form">
           <div class="form-control">
-            <input type="text" id="year" name="year" required>
+            <input autocomplete="off" type="text" id="year" name="year" required>
             <label>
               <span style="transition-delay:0ms">S</span>
               <span style="transition-delay:50ms">E</span>
