@@ -7,6 +7,6 @@ Route::get('/', [ApiController::class, 'index'])->name('home');
 
 Route::get('/game/{id}', [ApiController::class, 'show']);
 
-Route::get('/standings', [ApiController::class, 'index'])->name('standings');
+Route::get('/standings', [ApiController::class, 'standings'])->name('standings');
 
 Route::get('/standings/search', [ApiController::class, 'search'])->name('standings.search');

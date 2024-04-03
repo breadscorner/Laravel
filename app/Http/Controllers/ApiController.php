@@ -14,6 +14,15 @@ class ApiController
         // Fetch live matches from the API service
         $games = $apiService->fetchLiveMatches();
 
+        // Return the view with the fetched live matches, standings data, and conference/division arrays
+        return view('home', compact('games'));
+    }
+
+    public function Standings()
+    {
+        // Resolve the APIService using the Laravel application's service container
+        $apiService = resolve('App\Services\APIService');
+
         // Fetch league standings from the API service
         $standings = $apiService->fetchLeagueStandings();
 
@@ -36,8 +45,8 @@ class ApiController
             ]
         ];
 
-        // Return the view with the fetched live matches, standings data, and conference/division arrays
-        return view('home', compact('games', 'standings', 'easternConference', 'westernConference'));
+        // Return the view with the fetched standings data and conference/division arrays
+        return view('standings', compact('standings', 'easternConference', 'westernConference'));
     }
 
     public function show(Request $request, $id)
