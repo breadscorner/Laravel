@@ -258,6 +258,12 @@
   </style>
 </head>
 
+@extends('layouts.app')
+
+@section('title', 'Home')
+
+@section('content')
+
 <body>
   <header>
     <h1>Live Ice Hockey Scores</h1>
@@ -374,3 +380,5 @@
 </body>
 
 </html>
+
+@endsection
