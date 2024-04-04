@@ -19,9 +19,13 @@
 
     header {
       text-align: center;
-      padding: 20px;
+      padding: 0px;
       top: 0;
       width: 100%
+    }
+
+    ul {
+      padding: 0px;
     }
 
     h1 {
@@ -54,16 +58,13 @@
     .teams-container {
       display: flex;
       justify-content: center;
+      width: 100%;
     }
 
     .home-team,
     .away-team {
       flex: 1;
       text-align: right;
-    }
-
-    .vs {
-      margin: 0 10px;
     }
 
     .score {
@@ -77,30 +78,33 @@
       list-style-type: none;
       padding: 0;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       flex-wrap: wrap;
-      justify-content: space-around;
+      justify-content: center;
     }
 
     .game {
-      background-color: #1F2833;
-      margin: 10px;
+      margin: 0px auto 10px auto;
+      /* Top, Right, Bottom, Left */
       padding: 20px;
-      border-radius: 10px;
-      border: 1px solid #A8DADC;
-      flex: 0 0 calc(50% - 20px);
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
     }
 
-    @media (min-width: 600px) {
+    .team {
+      width: auto;
+    }
 
-      /* Medium screens and up */
+    /* For larger screens, adjust the width of .game to 50% */
+    @media (min-width: 768px) {
       .game {
-        flex: 0 0 calc(50% - 20px);
-        /* Two games per row, accounting for margins */
+        width: 50%;
+        /* Adjust the width for larger screens */
+        margin-bottom: 20px;
+        /* Specific bottom margin */
       }
     }
 
@@ -112,31 +116,21 @@
       color: #F1FAEE;
     }
 
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th,
-    td {
-      padding: 8px;
+    .tournament-type>h2 {
+      color: yellow;
+      font-family: "Exo 2", sans-serif;
+      text-transform: uppercase;
+      font-size: 2rem;
       text-align: center;
-      border-bottom: 1px solid #fff;
     }
 
-    th {
-      background-color: #45A29E;
-      color: #fff;
+    /* Add a bottom border to all .game elements, except the last one */
+    .tournament-type>ul>.game:not(:last-child) {
+      border-bottom: 1px solid #A8DADC;
     }
 
-    td {
-      background-color: #1F2833;
-      color: #fff;
-    }
-
-    tbody tr:nth-child(even) {
-      background-color: #0B0C10;
+    .status {
+      margin-bottom: 20px;
     }
 
     footer {
@@ -162,19 +156,25 @@
 
   <main>
     <ul class="games" id="games-list">
-      @forelse ($games['events'] as $event)
-      <li class="game">
-        <h2>{{ $event['tournament']['name'] ?? 'Unknown Tournament' }}</h2>
-        <div class="teams-container">
-          <a href="/game/{{ $event['id'] }}" class="team home-team">{{ $event['homeTeam']['name'] ?? 'Home Team' }}</a>
-          <div class="vs">vs.</div>
-          <a href="/game/{{ $event['id'] }}" class="team away-team">{{ $event['awayTeam']['name'] ?? 'Away Team' }}</a>
-        </div>
-        <div class="score">{{ $event['homeScore']['current'] ?? 'N/A' }} : {{ $event['awayScore']['current'] ?? 'N/A' }}</div>
-        <div>{{ $event['status']['description'] ?? 'N/A' }}</div>
+      @forelse ($groupedGames as $tournamentType => $events)
+      <li class="tournament-type">
+        <h2>{{ $tournamentType ?? 'Unknown League' }}</h2>
+        <ul>
+          @foreach ($events as $event)
+          <li class="game">
+            <div class="teams-container">
+              <a href="/game/{{ $event['id'] }}" class="team home-team">{{ $event['homeTeam']['name'] ?? 'Home Team' }}</a>
+              <div class="vs">v</div>
+              <a href="/game/{{ $event['id'] }}" class="team away-team">{{ $event['awayTeam']['name'] ?? 'Away Team' }}</a>
+            </div>
+            <div class="score">{{ $event['homeScore']['current'] ?? 'N/A' }} : {{ $event['awayScore']['current'] ?? 'N/A' }}</div>
+            <div class="status">{{ $event['status']['description'] ?? 'N/A' }}</div>
+          </li>
+          @endforeach
+        </ul>
       </li>
       @empty
-      <li class="game">No games available</li>
+      <li>No games available</li>
       @endforelse
     </ul>
   </main>

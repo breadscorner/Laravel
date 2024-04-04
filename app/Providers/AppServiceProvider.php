@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use GuzzleHttp\Client;
 use DateTime;
-use Illuminate\Support\Facades\Log; // Import the Log facade
+use Illuminate\Support\Facades\Log;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -47,7 +47,6 @@ class AppServiceProvider extends ServiceProvider
         {
           $response = "/api/ice-hockey/team/{$teamId}/matches/next/{page}";
 
-          // Make a request to fetch the next matches using the constructed URL
           $response = $this->client->request('GET', $response, [
             'headers' => [
               'X-RapidAPI-Host' => 'allsportsapi2.p.rapidapi.com',
@@ -61,14 +60,17 @@ class AppServiceProvider extends ServiceProvider
         public function fetchLeagueStandings()
         {
           // Fetch the current season ID
-          $currentSeasonId = $this->fetchCurrentSeason(234); // Assuming tournament ID is 234
+          $currentSeasonId = $this->fetchCurrentSeason(234);
           // Logging to see the currentSeasonId
           Log::info('Current Season ID: ' . $currentSeasonId);
+          $headers = [
+            'X-RapidAPI-Host' => 'allsportsapi2.p.rapidapi.com',
+            'X-RapidAPI-Key' => '2e0661fcf4mshd92ea5a77f2c19ep1c4802jsnbad996327241',
+          ];
           // Fetch the standings for the current season
           $response = $this->client->request('GET', "/api/ice-hockey/tournament/234/season/{$currentSeasonId}/standings/total", [
             'headers' => [
-              'X-RapidAPI-Host' => 'allsportsapi2.p.rapidapi.com',
-              'X-RapidAPI-Key' => '2e0661fcf4mshd92ea5a77f2c19ep1c4802jsnbad996327241',
+              'headers' => $headers
             ],
           ]);
           return json_decode($response->getBody()->getContents(), true);
@@ -99,12 +101,18 @@ class AppServiceProvider extends ServiceProvider
 
         public function fetchCurrentSeason($tournamentId)
         {
-          $response = $this->client->request('GET', "/api/ice-hockey/tournament/{$tournamentId}/seasons", [
-            'headers' => [
-              'X-RapidAPI-Host' => 'allsportsapi2.p.rapidapi.com',
-              'X-RapidAPI-Key' => '2e0661fcf4mshd92ea5a77f2c19ep1c4802jsnbad996327241',
-            ],
-          ]);
+          $headers = [
+            'X-RapidAPI-Host' => 'allsportsapi2.p.rapidapi.com',
+            'X-RapidAPI-Key' => '2e0661fcf4mshd92ea5a77f2c19ep1c4802jsnbad996327241',
+          ];
+
+          $response = $this->client->request(
+            'GET',
+            "/api/ice-hockey/tournament/{$tournamentId}/seasons",
+            [
+              'headers' => $headers,
+            ]
+          );
 
           $seasons = json_decode($response->getBody()->getContents(), true)['seasons'];
 
@@ -121,41 +129,41 @@ class AppServiceProvider extends ServiceProvider
           // If no current season is found, return null
           return null;
         }
+        // Fetch standings by year not working
         public function fetchStandingsByYear($year)
         {
-            try {
-                // Construct the API endpoint URL with the provided year
-                $url = "/api/standings?year={$year}";
-        
-                // Make a GET request to the API
-                $response = $this->client->request('GET', $url);
-        
-                // Check if the request was successful (status code 200)
-                if ($response->getStatusCode() === 200) {
-                    // Decode the JSON response
-                    $responseData = json_decode($response->getBody()->getContents(), true);
-        
-                    // Log the response data for debugging
-                    Log::info('Standings API Response: ' . json_encode($responseData));
-        
-                    // Return the decoded response data
-                    return $responseData;
-                } else {
-                    // Log an error if the request was not successful
-                    Log::error('Standings API Error: Unexpected status code - ' . $response->getStatusCode());
-        
-                    // Return null or an empty array as appropriate
-                    return [];
-                }
-            } catch (\Exception $e) {
-                // Log any exceptions that occur during the request
-                Log::error('Standings API Exception: ' . $e->getMessage());
-        
-                // Return null or an empty array as appropriate
-                return [];
+          try {
+            // Construct the API endpoint URL with the provided year
+            $url = "/api/standings?year={$year}";
+
+            // Make a GET request to the API
+            $response = $this->client->request('GET', $url);
+
+            // Check if the request was successful (status code 200)
+            if ($response->getStatusCode() === 200) {
+              // Decode the JSON response
+              $responseData = json_decode($response->getBody()->getContents(), true);
+
+              // Log the response data for debugging
+              Log::info('Standings API Response: ' . json_encode($responseData));
+
+              // Return the decoded response data
+              return $responseData;
+            } else {
+              // Log an error if the request was not successful
+              Log::error('Standings API Error: Unexpected status code - ' . $response->getStatusCode());
+
+              // Return null or an empty array as appropriate
+              return [];
             }
+          } catch (\Exception $e) {
+            // Log any exceptions that occur during the request
+            Log::error('Standings API Exception: ' . $e->getMessage());
+
+            // Return null or an empty array as appropriate
+            return [];
+          }
         }
-        
       };
     });
   }
