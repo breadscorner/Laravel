@@ -15,7 +15,6 @@
       background-color: #000000;
       color: #F1FAEE;
       font-family: 'Digital-7 Mono', sans-serif;
-      position: relative;
     }
 
     header {
@@ -140,13 +139,11 @@
     }
 
     footer {
+      position: relative;
       text-align: center;
       padding: 10px;
-      position: absolute;
-      left: 0;
-      bottom: 0;
       width: 100%;
-      min-height: 100vh;
+      margin-top: auto;
     }
   </style>
 </head>
