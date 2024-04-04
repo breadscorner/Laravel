@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Live NHL Scores</title>
+  <title>Live Scores</title>
   <link href="https://fonts.googleapis.com/css?family=Nunito:400,600&display=swap" rel="stylesheet">
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +15,7 @@
       background-color: #000000;
       color: #F1FAEE;
       font-family: 'Digital-7 Mono', sans-serif;
+      position: relative;
     }
 
     header {
@@ -94,6 +95,11 @@
       justify-content: center;
     }
 
+    .no-game {
+      text-align: center;
+      padding: 20px;
+    }
+
     .team {
       width: auto;
     }
@@ -136,9 +142,11 @@
     footer {
       text-align: center;
       padding: 10px;
+      position: absolute;
       left: 0;
       bottom: 0;
       width: 100%;
+      min-height: 100vh;
     }
   </style>
 </head>
@@ -174,7 +182,7 @@
         </ul>
       </li>
       @empty
-      <li>No games available</li>
+      <li class="no-game">No games available</li>
       @endforelse
     </ul>
   </main>

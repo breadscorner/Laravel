@@ -15,6 +15,7 @@
       background-color: #000000;
       color: #F1FAEE;
       font-family: 'Digital-7 Mono', sans-serif;
+      position: relative;
     }
 
     header {
@@ -63,13 +64,13 @@
     }
 
     td {
-      background-color: #1F2833;
       color: #fff;
     }
 
     tbody tr:nth-child(even) {
-      background-color: #0B0C10;
+      background: linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 1%, rgba(0, 0, 0, 0.2) 2%, rgba(0, 0, 0, 0.3) 3%, rgba(0, 0, 0, 0.4) 4%, rgba(0, 0, 0, 0.5) 5%, rgba(0, 0, 0, 0.6) 6%, rgba(0, 0, 0, 0.7) 7%, rgba(0, 0, 0, 0.8) 8%, rgba(0, 0, 0, 0.9) 9%, #0B0C10 10%, #0B0C10 90%, rgba(0, 0, 0, 0.9) 91%, rgba(0, 0, 0, 0.8) 92%, rgba(0, 0, 0, 0.7) 93%, rgba(0, 0, 0, 0.6) 94%, rgba(0, 0, 0, 0.5) 95%, rgba(0, 0, 0, 0.4) 96%, rgba(0, 0, 0, 0.3) 97%, rgba(0, 0, 0, 0.2) 98%, rgba(0, 0, 0, 0.1) 99%, rgba(0, 0, 0, 0) 100%);
     }
+
 
     .form-control {
       position: relative;
@@ -149,7 +150,6 @@
     .standings {
       margin-top: 0px;
       padding: 10px;
-      border-radius: 10px;
     }
 
     .standings h2 {
@@ -167,9 +167,6 @@
 
     .conference {
       flex: 0 0 45%;
-      background-color: #1F2833;
-      border-radius: 10px;
-      border: 1px solid #A8DADC;
       padding: 20px;
     }
 
@@ -184,9 +181,11 @@
     footer {
       text-align: center;
       padding: 10px;
+      position: absolute;
       left: 0;
       bottom: 0;
       width: 100%;
+      min-height: 100vh;
     }
   </style>
 </head>
@@ -238,6 +237,7 @@
               <tr>
                 <th>Team</th>
                 <th>Wins</th>
+                <th>OT Losses</th>
                 <th>Losses</th>
                 <th>Points</th>
               </tr>
@@ -249,6 +249,7 @@
               <tr>
                 <td>{{ $row['team']['name'] }}</td>
                 <td>{{ $row['wins'] }}</td>
+                <td>{{ $row['overtimeLosses'] }}</td>
                 <td>{{ $row['losses'] }}</td>
                 <td>{{ $row['points'] }}</td>
               </tr>
@@ -266,6 +267,7 @@
               <tr>
                 <th>Team</th>
                 <th>Wins</th>
+                <th>OT Losses</th>
                 <th>Losses</th>
                 <th>Points</th>
               </tr>
@@ -277,6 +279,7 @@
               <tr>
                 <td>{{ $row['team']['name'] }}</td>
                 <td>{{ $row['wins'] }}</td>
+                <td>{{ $row['overtimeLosses'] }}</td>
                 <td>{{ $row['losses'] }}</td>
                 <td>{{ $row['points'] }}</td>
               </tr>
@@ -288,6 +291,12 @@
       </div>
     </div>
   </main>
+
+  <footer>
+    Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
+  </footer>
 </body>
+
+</html>
 
 @endsection
